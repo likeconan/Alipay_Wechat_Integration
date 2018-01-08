@@ -18,7 +18,7 @@ import axios from 'axios';
 
 export default class App extends Component {
 
-  _pay = () => {
+  _alipay = () => {
     var payAction = NativeModules.PayAction
     axios.post('http://192.168.1.45:3000/alipay/pay').then(({ data }) => {
       return payAction.pay(data)
@@ -38,11 +38,11 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <Button title=' Alipay 支付' onPress={this._pay} style={styles.welcome} />
+          <Button title=' Alipay 支付' onPress={this._alipay} style={styles.welcome} />
 
         </View>
         <View style={{ marginVertical: 40 }}>
-          <Button title=' Wechat 支付' color='#00c853' onPress={this._pay} style={styles.instructions} />
+          <Button title=' Wechat 支付' color='#00c853' onPress={this._alipay} style={styles.instructions} />
         </View>
       </View>
     );

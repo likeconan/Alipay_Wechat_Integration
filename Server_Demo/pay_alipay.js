@@ -56,7 +56,7 @@ alipay.post('/pay', function (req, res) {
     var signedStr = signed({
         body: '测试支付',//预祝春节快乐，1分钱购，赠送IPhone X一人一部
         subject: '测试支付',//免费赠送IPhone X
-        out_trade_no: '70501111111S00113119',  //自己平台的支付订单号码
+        out_trade_no: '70501111111S501115',  //自己平台的支付订单号码
         total_amount: '0.01'       //支付金额，以元为单位
     })
 
@@ -64,24 +64,27 @@ alipay.post('/pay', function (req, res) {
 })
 
 alipay.post('/notify_url', function (req, res) {
-    debugger
-    console.log(req)
+    var obj = req.body
+    var sign = req.body.sign
+    delete obj['sign']
+    delete obj['sign_type']
+
+    var verRes = verified(helper.raw(obj), sign)
+    if (verRes) {
+        /** 
+         * 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
+         * 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）
+         * 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）
+         * 4、验证app_id是否为该商户本身。上述1、2、3、4有任何一个验证不通过，则表明本次通知是异常通知，务必忽略。在上述验证通过后商户必须根据支付宝不同类型的业务通知，
+         * 正确的进行不同的业务处理，并且过滤重复的通知结果数据。
+         * 在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
+        */
+        //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
+        res.send('success')
+    } else {
+        res.send('failure')
+    }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
