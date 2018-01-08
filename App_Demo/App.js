@@ -9,29 +9,41 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  Button,
+  View,
+  NativeModules
 } from 'react-native';
+import axios from 'axios';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-export default class App extends Component<{}> {
+export default class App extends Component {
+
+  _pay = () => {
+    var payAction = NativeModules.PayAction
+    axios.post('http://192.168.1.45:3000/alipay/pay').then(({ data }) => {
+      return payAction.pay(data)
+    }).then((res) => {
+      alert(res)
+      console.log(res)
+    }).catch((err) => {
+      alert(err)
+      console.log(err)
+    })
+
+  }
+
+
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <View>
+          <Button title=' Alipay 支付' onPress={this._pay} style={styles.welcome} />
+
+        </View>
+        <View style={{ marginVertical: 40 }}>
+          <Button title=' Wechat 支付' color='#00c853' onPress={this._pay} style={styles.instructions} />
+        </View>
       </View>
     );
   }
@@ -41,17 +53,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    padding: 40,
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    width: 200,
+    marginVertical: 20,
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
+    width: 200,
+    marginVertical: 20,
   },
 });
