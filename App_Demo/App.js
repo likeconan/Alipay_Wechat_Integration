@@ -20,6 +20,7 @@ export default class App extends Component {
 
   _alipay = () => {
     var payAction = NativeModules.PayAction
+    debugger
     axios.post('http://192.168.1.45:3000/alipay/pay').then(({ data }) => {
       return payAction.pay(data)
     }).then((res) => {
@@ -63,7 +64,7 @@ export default class App extends Component {
 
         </View>
         <View style={{ marginVertical: 40 }}>
-          <Button title=' Wechat 支付' color='#00c853' onPress={this._alipay} style={styles.instructions} />
+          <Button title=' Wechat 支付' color='#00c853' onPress={this._wxpay} style={styles.instructions} />
         </View>
       </View>
     );
