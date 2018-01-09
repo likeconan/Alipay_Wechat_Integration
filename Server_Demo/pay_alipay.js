@@ -42,7 +42,7 @@ var signed = function (order) {
     return qs.stringify(unsigned) + '&sign=' + encodeURIComponent(sign)    //encode
 }
 
-
+//收到支付宝异步通知进行验签
 var verified = function (response, sign) {
     let public_key = fs.readFileSync('./config/alipay_public_key.pem');
     var verify = crypto.createVerify('RSA-SHA256');
@@ -63,6 +63,7 @@ alipay.post('/pay', function (req, res) {
     res.send(signedStr);
 })
 
+//接受支付宝通知
 alipay.post('/notify_url', function (req, res) {
     var obj = req.body
     var sign = req.body.sign

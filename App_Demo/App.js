@@ -14,7 +14,7 @@ import {
   NativeModules
 } from 'react-native';
 import axios from 'axios';
-
+import * as Wechat from 'react-native-wechat';
 
 export default class App extends Component {
 
@@ -30,6 +30,27 @@ export default class App extends Component {
       console.log(err)
     })
 
+  }
+
+  _wxpay = () => {
+    Wechat.isWXAppInstalled().then((res) => {
+      if (res) {
+        axios.post('http://192.168.1.45:3000/wechat/pay').then(({ data }) => {
+          return Wechat.pay(data)
+        }).then((success) => {
+          alert('Success pay')
+        }).catch((err) => {
+          console.log(err)
+        })
+      } else {
+        alert('Not intalled wechat')
+      }
+    })
+  }
+
+  constructor(props) {
+    super(props);
+    Wechat.registerApp('')
   }
 
 

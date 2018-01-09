@@ -89,3 +89,7 @@
 -keep class com.alipay.tscenter.** { *; }
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
+
+-keep class com.tencent.mm.sdk.** {
+  *;
+}

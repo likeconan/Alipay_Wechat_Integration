@@ -115,6 +115,23 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file("/my-release-key.keystore")
+            storePassword "abc123"
+            keyAlias "my-key-alias"
+            keyPassword "abc123"
+        }
+        debug {
+            storeFile file("/my-release-key.keystore")
+            storePassword "abc123"
+            keyAlias "my-key-alias"
+            keyPassword "abc123"
+        }
+
+    }
+
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -139,6 +156,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/alipaySdk-20170922.jar')
+    compile project(':RCTWeChat')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
 }
