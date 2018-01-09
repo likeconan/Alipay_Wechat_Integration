@@ -5,12 +5,14 @@ var request = require("request");
 
 var helper = require('./helper')
 
+// 配置相关变量
 const APPID = ''          //你的微信应用APPID
 const MCH_ID = ''         //你的商户ID
 const KEY = ''            //设置的密钥key 
 const NOTIFY_URL = 'http://192.168.1.45:3000/wechat/notify_url'     //设置你的回调地址
 
 
+// 根据订单产生prepay的签名
 var prepaySign = function (order) {
     var ret = {
         appid: APPID,
@@ -30,6 +32,8 @@ var prepaySign = function (order) {
     return sign.toUpperCase();
 }
 
+
+//根据prepay的id，产生支付的签名
 var paySign = function (prepay) {
     var ret = {
         appid: APPID,
@@ -46,6 +50,7 @@ var paySign = function (prepay) {
 }
 
 
+// 访问
 var requestPrepay = function (order) {
 
     return new Promise((resolve, reject) => {
@@ -119,7 +124,7 @@ wechat.post('/pay', function (req, res) {
 wechat.post('/notify_url', function (req, res) {
     parser.parseString(req.body, function (err, result) {
         var wechatPayResult = result.xml
-       
+
         console.log('wechat', wechatPayResult)
         var success = wechatPayResult.return_code[0] == 'SUCCESS'
 
