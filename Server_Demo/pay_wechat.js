@@ -50,7 +50,7 @@ var paySign = function (prepay) {
 }
 
 
-// 访问
+// 访问微信，根据订单信息，获取prepay并且生成最后的支付订单内容
 var requestPrepay = function (order) {
 
     return new Promise((resolve, reject) => {
@@ -107,6 +107,8 @@ var requestPrepay = function (order) {
 
 }
 
+
+//产生订单
 wechat.post('/pay', function (req, res) {
 
     requestPrepay({
@@ -121,6 +123,8 @@ wechat.post('/pay', function (req, res) {
     })
 })
 
+
+//回调方法
 wechat.post('/notify_url', function (req, res) {
     parser.parseString(req.body, function (err, result) {
         var wechatPayResult = result.xml
@@ -133,23 +137,6 @@ wechat.post('/notify_url', function (req, res) {
     })
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = wechat;
